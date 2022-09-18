@@ -21,6 +21,21 @@ app.get("/", (req, res) => {
   );
 });
 
+app.get("/elephant/:id", (req, res) => {
+  const index = req.params.id;
+  request(
+    { url: "https://elephant-api.herokuapp.com/elephants" },
+    (error, response, body) => {
+      if (error || response.statusCode !== 200) {
+        return res.status(500).json({ type: "error" });
+      }
+
+      const matchingElephant = JSON.parse(body).filter((e) => e.index == index);
+      res.json(matchingElephant[0]);
+    }
+  );
+});
+
 app.get("/sex/:sex", (req, res) => {
   const sex = req.params.sex;
   request(
